@@ -5,48 +5,71 @@ function playGame() {
     let computerScore = 0;
 
     function playRound(computerChoice, humanChoice) {
-        if (computerChoice === "rock" && humanChoice === "scissors")  {
-            console.log("You lose! Rock beats scissors");
+        if (computerChoice === "rock" && humanChoice === "scissors") {
             computerScore++;
+            return "You lose! Rock beats scissors";
         }
-        else if (computerChoice === "paper" && humanChoice === "rock")  {
-            console.log("You lose! Paper beats rock");
+        else if (computerChoice === "paper" && humanChoice === "rock") {
             computerScore++;
+            return "You lose! Paper beats rock";
         }
-        else if (computerChoice === "scissors" && humanChoice === "paper")  {
-            console.log("You lose! Scissors beats paper");
+        else if (computerChoice === "scissors" && humanChoice === "paper") {
             computerScore++;
+            return "You lose! Scissors beats paper";
         }
-    
+
         else if (humanChoice === "rock" && computerChoice == "scissors") {
-            console.log("You win! Rock beats scissors!");
             humanScore++;
+            return "You win! Rock beats scissors!";
         }
         else if (humanChoice === "paper" && computerChoice == "rock") {
-            console.log("You win! Paper beats rock!");
             humanScore++;
+            return "You win! Paper beats rock!";
         }
         else if (humanChoice === "scissors" && computerChoice == "paper") {
-            console.log("You win! Scissors beats paper!");
             humanScore++;
+            return "You win! Scissors beats paper!";
         }
-    
+
         else {
-            console.log("Draw!");
+            return "draw";
         }
 
     }
-    /*for (let i = 0; i < 5; i++) {
-        let humanChoice = getHumanChoice();
-        let computerChoice = getComputerChoice();
-        playRound(computerChoice, humanChoice);
-    }
-    */ 
-		//console.log(`Computer score: ${computerScore}, human score: ${humanScore}`)
-    
+    const buttons = document.querySelectorAll("button");
+    let computerChoice = getComputerChoice();
+
+    buttons.forEach((button) => {
+        button.addEventListener("click", (event) => {
+            event.stopPropagation();
+            let humanChoice = button.id;
+            let matchResult = playRound(computerChoice, humanChoice);
+            showResults(matchResult);
+        })
+    })
+
 }
 
+// Shows individual and final match results.
+function showResults(result) {
+    const domResults = document.querySelector("#dom-results");
+    const resultText = document.createElement("p");
+    resultText.style.backgroundColor = "red";
+    resultText.textContent = result;
+    domResults.appendChild(resultText);
 
+    // Start the next match when the user clicks anywhere
+    // Theres probably a cleaner way to do this
+    const body = document.querySelector("body");
+    // This doesnt work if the user clicks on the button... oops
+    // Need to add a workaround listener for the buttons.
+    body.addEventListener("click", function restart() {
+        body.removeEventListener("click", restart);
+        domResults.removeChild(resultText);
+        return 
+    },)
+
+}
 
 function getComputerChoice() {
     let randomIndex = Math.floor(Math.random() * choices.length);
@@ -54,18 +77,4 @@ function getComputerChoice() {
 }
 
 
-
-
-
-// Some sort of loop would go throught here
-let computerChoice = getComputerChoice();
-// Human choice
-// uh prob gonna use a foreach or something
-btnContainer.addEventListener("click", (event) => {
-    let target = event.target;
-    switch(target.id) {
-        case "rock" {
-
-        }
-    }
-})
+playGame();
