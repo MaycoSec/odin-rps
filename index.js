@@ -1,4 +1,13 @@
 const choices = ["rock", "paper", "scissors"];
+const emojis = {
+    rock: String.fromCodePoint(0x1FAA8),
+    paper: String.fromCodePoint(0x1F4C4),
+    scissors: String.fromCodePoint(0x2702),
+}
+
+for (let i in emojis) {
+    console.log(emojis[i]);
+}
 
 function playGame() {
     let humanScore = 0;
@@ -32,30 +41,60 @@ function playGame() {
         }
 
         else {
-            return "draw";
+            return "Tie!";
         }
 
     }
     const buttons = document.querySelectorAll("button");
-    let computerChoice = getComputerChoice();
 
     buttons.forEach((button) => {
         button.addEventListener("click", (event) => {
             event.stopPropagation();
+            let computerChoice = getComputerChoice();
             let humanChoice = button.id;
             let matchResult = playRound(computerChoice, humanChoice);
-            showResults(matchResult);
+            setupCombatUI(computerChoice, humanChoice);
+            showResults(matchResult, computerChoice, humanChoice);
         })
     })
 
+}
+
+
+function setupCombatUI(computerChoice, humanChoice) {
+    const combat = document.querySelector(".combat");
+    const versus = document.querySelector("#versus-div");
+    // Transform each choice to its emoji equivalent
+    for (let key in emojis) {
+        if (key === humanChoice) {
+            let humanFighter = document.createElement("span");
+            humanFighter.textContent = emojis[key];
+            humanFighter.style.fontSize = "64px";
+            combat.insertBefore(humanFighter, versus);
+        }
+    }
+    // Diferent loops so we can be sure the human choice appears first
+
+    setTimeout(() => {
+            for (let key in emojis) {
+            if (key === computerChoice) {
+                let computerFigther = document.querySelector("#computer-fighter");
+                computerFigther.textContent = emojis[key];
+                computerFigther.style.fontSize = "64px";
+                // combat.appendChild(computerFigther);
+            }
+        }
+    }, 125)
 }
 
 // Shows individual and final match results.
 function showResults(result) {
     const domResults = document.querySelector("#dom-results");
     const resultText = document.createElement("p");
-    resultText.style.backgroundColor = "red";
+    resultText.style.color = "white";
+    resultText.style.fontWeight = "bolder";
     resultText.textContent = result;
+    resultText.style.textAlign = "center";
     domResults.appendChild(resultText);
 
     // Start the next match when the user clicks anywhere
