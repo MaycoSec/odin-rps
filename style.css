@@ -3,17 +3,47 @@ body {
     padding: none;
     display: flex;
     flex-direction: column;
-    background-color: #5A8FD5;
+    background-image: linear-gradient(to bottom ,purple, #5A8FD5);
 }
 
 
 .container {
     height: 100vh;
-    background-color: purple;
     display: flex;
     flex-direction: column;
 }
 
+.scores {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 18px;
+    margin-left: 80px;
+    margin-right: 80px;
+}
+
+.scores .human {
+    width: 100px;
+    height: 125%;
+    border-radius: 50%;
+    background-color: rgb(57, 247, 57);
+}
+
+.scores .computer {
+    width: 100px;
+    height: 125%;
+    border-radius: 50%;
+    background-color: yellow;
+}
+
+.scores .human-player {
+    color: blue;
+}
+
+.scores .computer-player {
+    color: red;
+}
 
 #dom-results {
     height: 200px;

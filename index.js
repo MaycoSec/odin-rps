@@ -54,7 +54,14 @@ function playGame() {
             let humanChoice = button.id;
             let matchResult = playRound(computerChoice, humanChoice);
             setupCombatUI(computerChoice, humanChoice);
-            showResults(matchResult, computerChoice, humanChoice);
+            
+            // Scores
+            const humanScoreUI = document.querySelector(".human-score");
+            const computerScoreUI = document.querySelector(".computer-score");
+            humanScoreUI.textContent = humanScore;
+            computerScoreUI.textContent = computerScore;
+
+            showResults(matchResult);
         })
     })
 
@@ -67,10 +74,12 @@ function setupCombatUI(computerChoice, humanChoice) {
     // Transform each choice to its emoji equivalent
     for (let key in emojis) {
         if (key === humanChoice) {
-            let humanFighter = document.createElement("span");
+            let humanFighter = document.querySelector("#human-fighter");
             humanFighter.textContent = emojis[key];
             humanFighter.style.fontSize = "64px";
-            combat.insertBefore(humanFighter, versus);
+
+            // For some odd reason the scissors emoji is not 64px wide
+            humanFighter.style.width = "64px";
         }
     }
     // Diferent loops so we can be sure the human choice appears first
@@ -81,7 +90,7 @@ function setupCombatUI(computerChoice, humanChoice) {
                 let computerFigther = document.querySelector("#computer-fighter");
                 computerFigther.textContent = emojis[key];
                 computerFigther.style.fontSize = "64px";
-                // combat.appendChild(computerFigther);
+                computerFigther.style.width = "64px";
             }
         }
     }, 125)
@@ -90,24 +99,24 @@ function setupCombatUI(computerChoice, humanChoice) {
 // Shows individual and final match results.
 function showResults(result) {
     const domResults = document.querySelector("#dom-results");
-    const resultText = document.createElement("p");
-    resultText.style.color = "white";
+    const resultText = document.querySelector(".results-text");
+
+    let color;
+    if (result.includes("lose")) {
+        // change color a bit
+        color = "red"
+    }
+    else if (result.includes("win")) {
+        // change the color a bit
+        color = "#2218A7";
+    }
+    else {
+        color = "white"
+    }
+    resultText.style.color = color;
     resultText.style.fontWeight = "bolder";
     resultText.textContent = result;
     resultText.style.textAlign = "center";
-    domResults.appendChild(resultText);
-
-    // Start the next match when the user clicks anywhere
-    // Theres probably a cleaner way to do this
-    const body = document.querySelector("body");
-    // This doesnt work if the user clicks on the button... oops
-    // Need to add a workaround listener for the buttons.
-    body.addEventListener("click", function restart() {
-        body.removeEventListener("click", restart);
-        domResults.removeChild(resultText);
-        return 
-    },)
-
 }
 
 function getComputerChoice() {
