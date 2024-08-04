@@ -73,7 +73,7 @@ body {
     flex-wrap: wrap;
 }
 
-button {
+button.choice {
     border: none;
     font-size: 64px;
     min-width: 0;

@@ -5,10 +5,6 @@ const emojis = {
     scissors: String.fromCodePoint(0x2702),
 }
 
-for (let i in emojis) {
-    console.log(emojis[i]);
-}
-
 function playGame() {
     let humanScore = 0;
     let computerScore = 0;
@@ -53,8 +49,16 @@ function playGame() {
             let computerChoice = getComputerChoice();
             let humanChoice = button.id;
             let matchResult = playRound(computerChoice, humanChoice);
+            if (humanScore >= 5) {
+                showFinalResults("You win!");
+                console.log("You win!");
+            }
+            else if (computerScore >= 5) {
+                showFinalResults("You lost.");
+                console.log("You lost.");
+            }
             setupCombatUI(computerChoice, humanChoice);
-            
+
             // Scores
             const humanScoreUI = document.querySelector(".human-score");
             const computerScoreUI = document.querySelector(".computer-score");
@@ -85,7 +89,7 @@ function setupCombatUI(computerChoice, humanChoice) {
     // Diferent loops so we can be sure the human choice appears first
 
     setTimeout(() => {
-            for (let key in emojis) {
+        for (let key in emojis) {
             if (key === computerChoice) {
                 let computerFigther = document.querySelector("#computer-fighter");
                 computerFigther.textContent = emojis[key];
@@ -96,18 +100,16 @@ function setupCombatUI(computerChoice, humanChoice) {
     }, 125)
 }
 
-// Shows individual and final match results.
+// Shows individual match results.
 function showResults(result) {
     const domResults = document.querySelector("#dom-results");
     const resultText = document.querySelector(".results-text");
 
     let color;
     if (result.includes("lose")) {
-        // change color a bit
         color = "red"
     }
     else if (result.includes("win")) {
-        // change the color a bit
         color = "#2218A7";
     }
     else {
@@ -118,10 +120,41 @@ function showResults(result) {
     resultText.textContent = result;
     resultText.style.textAlign = "center";
 }
-
 function getComputerChoice() {
     let randomIndex = Math.floor(Math.random() * choices.length);
     return choices[randomIndex];
+}
+
+function showFinalResults(message) {
+    const body = document.querySelector("body");
+    body.style.opacity = "0.4";
+    const domResults = document.querySelector("#dom-results");
+
+    const window = document.createElement("div");
+    const winnerMessage = document.createElement("p");
+    const playAgainBtn = document.createElement("button");
+
+    window.style.display = "flex";
+    window.style.flexDirection = "column"
+    window.style.alignItems = "center";
+    window.style.backgroundColor = "#5A8FD5";
+    window.style.width = "300px";
+    window.style.height = "200px";
+    window.style.margin = "auto";
+    winnerMessage.style.fontSize = "32px" ;
+    winnerMessage.textContent = message;
+    winnerMessage.style.textAlign = "center";
+    winnerMessage.style.fontWeight = "bold";
+
+    playAgainBtn.style.width = "150px";
+    playAgainBtn.textContent = "Play again";
+
+    domResults.insertBefore(window, document.querySelector("#result-text"));
+    window.appendChild(winnerMessage);
+    window.appendChild(playAgainBtn);
+
+
+
 }
 
 
