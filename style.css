@@ -6,7 +6,6 @@ body {
     background-image: linear-gradient(to bottom ,purple, #5A8FD5);
 }
 
-
 .container {
     height: 100vh;
     display: flex;

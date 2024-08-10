@@ -5,9 +5,10 @@ const emojis = {
     scissors: String.fromCodePoint(0x2702),
 }
 
+let humanScore = 0;
+let computerScore = 0;
+
 function playGame() {
-    let humanScore = 0;
-    let computerScore = 0;
 
     function playRound(computerChoice, humanChoice) {
         if (computerChoice === "rock" && humanChoice === "scissors") {
@@ -127,7 +128,8 @@ function getComputerChoice() {
 
 function showFinalResults(message) {
     const body = document.querySelector("body");
-    body.style.opacity = "0.4";
+    // Thats the best i could do to add opacity to the background.
+    body.style.backgroundImage = "linear-gradient(to bottom ,rgba(128, 0, 128, 0.7), rgba(90, 143, 213, 0.9))";
     const domResults = document.querySelector("#dom-results");
 
     const window = document.createElement("div");
@@ -141,18 +143,49 @@ function showFinalResults(message) {
     window.style.width = "300px";
     window.style.height = "200px";
     window.style.margin = "auto";
+
     winnerMessage.style.fontSize = "32px" ;
     winnerMessage.textContent = message;
     winnerMessage.style.textAlign = "center";
     winnerMessage.style.fontWeight = "bold";
 
     playAgainBtn.style.width = "150px";
+    playAgainBtn.style.backgroundColor = "purple";
+    playAgainBtn.style.border = "solid";
+    playAgainBtn.style.borderRadius = "12px";
+    playAgainBtn.style.boxShadow = "7px";
+    playAgainBtn.style.padding = "16px";
+    playAgainBtn.style.fontWeight = "bold";
     playAgainBtn.textContent = "Play again";
 
     domResults.insertBefore(window, document.querySelector("#result-text"));
     window.appendChild(winnerMessage);
     window.appendChild(playAgainBtn);
 
+    playAgainBtn.addEventListener("click", () => {
+
+        humanScore = 0;
+        computerScore = 0;
+
+        // Also clean for new match
+        const humanScoreUI = document.querySelector(".human-score");
+        const computerScoreUI = document.querySelector(".computer-score");
+        humanScoreUI.textContent = 0;
+        computerScoreUI.textContent = 0;
+        
+        // remove the fighters
+        const humanFighter = document.querySelector("#human-fighter");
+        const computerFigther = document.querySelector("#computer-fighter");
+        humanFighter.textContent = "";
+        computerFigther.textContent = "";
+
+        // Remove winner window
+        domResults.removeChild(window)
+
+        // Set background back to normal
+        body.style.backgroundImage = "linear-gradient(to bottom ,rgba(128, 0, 128), rgba(90, 143, 213))";
+
+    })
 
 
 }
